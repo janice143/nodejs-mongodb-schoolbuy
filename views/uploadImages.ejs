@@ -1,0 +1,77 @@
+<form action="/upload" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label for="">Title</label>
+        <input type="text" name="title" value=""  placeholder="Title">
+        <br>
+        
+        <label for="">description</label>
+        <textarea name="description" cols="30" rows="10" placeholder="Description"></textarea>
+        <br>
+
+        <label for="">keyword</label>
+        <input type="text" name="keyword" value=""  placeholder="keyword1">
+        <input type="text" name="keyword" value=""  placeholder="keyword2">
+        <input type="text" name="keyword" value=""  placeholder="keyword3">
+        <br>
+
+        <label for="">Category</label>
+        <select name="categoryName">
+            <% categories.forEach(cat=>{ %>
+                <option value="<%= cat.categoryName %>"><%= cat.categoryName %></option>
+            <% }) %>
+        </select>
+
+        <br>
+
+        <label for="">price</label>
+        <input type="text" name="price" value=""  placeholder="price">
+        <br>
+        
+        <label for="">上传一张主要的图片</label>
+        <input type="file" class="form-control-file" name="uploaded_file" >
+        <br>
+
+        <label for="">上传多张其他角度的图片，不超过6张</label>
+        <input type="file" class="form-control-file" name="uploaded_file" multiple>
+        <br>
+        
+
+        <input type="submit" value="Get me the stats!" class="btn btn-default">
+    </div>
+</form>
+
+
+<!-- 上传图片列表gallery -->
+<!-- <form action="/upload" method="post" enctype="multipart/form-data" class="dropzone" id="my-great-dropzone" >
+    <input type="file" class="form-control-file" name="uploaded_file">
+        <br>
+
+    <div class="fallback">
+        <input type="file" name="uploaded_file" multiple>
+        <input type="submit" value="upload">
+    </div>
+</form> -->
+
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
+<script>
+    
+    // 拖拽上传 dropzone 
+    // const dropzone = new Dropzone("div.my-dropzone", { url: "/file/post" });
+    // const myGreatDropzone = document.querySelector('#my-great-dropzone')
+    Dropzone.options.myGreatDropzone = { // camelized version of the `id`
+    acceptedFiles:"image/*",
+    init: function() {
+        this.on("queuecomplete", function(file) {
+            // setTimeout(function() {
+            // location.reload()
+            // }, 1000); 
+        });
+    }
+  };
+
+
+</script>
+
+
