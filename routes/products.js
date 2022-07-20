@@ -1,25 +1,25 @@
 const express = require('express')
 const router = express.Router() //初始化路由
-const role = require('../middlewares/role')
-const isAdmin = role.isAdmin;
+
+const isAuth = require('../middlewares/isAuth')
 
 const ProductController = require('../controller/product/product')
 const ProductFrontController = require('../controller/product/productFront')
 
 // ***************************** 后台 ***************************** 
 // 按条件获取商品，如果没给参数。就显示全部商品
-router.post('/api/productlist',ProductController.getProductlist)
+router.post('/api/productlist', isAuth, ProductController.getProductlist)
 
-// 上传商品图片
-router.post('/api/product/fileUpload',ProductController.postProductFiles)
+// 上传商品图片，不给权限，因为上传图片会发送两次请求，第一次有权限，第二次没有
+router.post('/api/product/fileUpload', ProductController.postProductFiles)
 
 // 发布（上传）商品信息
-router.post('/api/product/saveProduct',ProductController.postProduct)
+router.post('/api/product/saveProduct', isAuth, ProductController.postProduct)
 
 // 删除商品
-router.delete('/api/product/deleteProduct',ProductController.deleteProduct)
+router.delete('/api/product/deleteProduct', isAuth, ProductController.deleteProduct)
 
-
+router.post('/api/product/count',isAuth,  ProductController.getAllProductCount)
 
 
 // // ***************************** 前台 ***************************** 
@@ -33,10 +33,10 @@ router.get('/api/productdetail/:productId',ProductFrontController.getProductdeta
 router.get('/api/product/users',ProductFrontController.getUsersdetail)
 
 // 点击想要商品，对应商品的hotScore+1
-router.post('/api/want/:productId',ProductFrontController.wantProduct)
+router.post('/api/want/:productId', isAuth, ProductFrontController.wantProduct)
 
 // 取消想要商品，对应商品的hotScore-1
-router.post('/api/wantno/:productId',ProductFrontController.wantNoProduct)
+router.post('/api/wantno/:productId', isAuth, ProductFrontController.wantNoProduct)
 
 // 获取用户的想要列表
 // router.get('/api/want/list',ProductFrontController.getWantList)

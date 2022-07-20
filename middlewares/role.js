@@ -2,21 +2,19 @@
 
 
 exports.isUser = (req,res,next)=>{
-    // if(req.isAuthenticated()){
-    //     next();
-    // }else{
-    //     req.flash('danger','Please log in')
-    //     res.redirect('/users/login')
-    // }
+    if(req.session.username && req.session.username !== 'admin'){
+        next();
+    }else{
+        res.json({ message: '权限禁止', code: 401, data:null, ok:false  });
+    }
 }
 exports.isAdmin = (req,res,next)=>{
-    console.log(req.session.admin)
-    // if(req.isAuthenticated() && res.locals.user.admin===1){
-    //     next();
-    // }else{
-    //     req.flash('danger','Please log in')
-    //     res.redirect('/users/login')
-    // }
+
+    if(req.session.username === 'admin'){
+        next();
+    }else{
+        res.json({ message: '权限禁止', code: 401, data:null, ok:false  });
+    }
 }
 
 

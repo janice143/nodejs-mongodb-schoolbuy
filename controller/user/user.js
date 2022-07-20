@@ -11,7 +11,28 @@ class UserController {
   async login(req, res, next) {
 
     // console.log('test',req.body)
-    const { username, password } = req.body
+    const { username, password, codeNumber} = req.body
+    // 验证 验证码是否正确
+    const cap = req.session.cap;
+		if (!cap) {
+			console.log('验证码失效')
+      res.json({
+        msg: '验证码失效',
+        code: 401,
+        data: null,
+        ok: false
+      })
+      return
+		}
+    if (cap.toString() !== codeNumber.toString()) {
+      res.json({
+        msg: '验证码不正确',
+        code: 401,
+        data: null,
+        ok: false
+      })
+      return
+    }
     // 验证用户是否存在，存在是否密码正确
     User.findOne({ username: username }, (err, user) => {
       if (err) {
@@ -39,7 +60,7 @@ class UserController {
           const rule = {
             username: user.username
           }
-          const token = 'Bearer ' + Token.encrypt(rule, 60 * 60)
+          const token = 'Bearer ' + Token.encrypt(rule, 60 * 60) // 60 * 60s 秒
           res.json({
             msg: '操作成功',
             code: 200,
@@ -82,9 +103,10 @@ class UserController {
           place: place,
           phone: phone,
           admin: false,
+          createTime: Date.now(),
           routes: []
           // admin: true,
-          // routes: ['User','List']
+          // routes: ['User','List','Place']
         });
         // 密码加密
         bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
@@ -156,6 +178,7 @@ class UserController {
 
   // 退出登录
   async logout(req,res,next){
+    req.session.username = ''
     res.json({
       msg:'操作成功',
       code:200,

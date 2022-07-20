@@ -9,7 +9,7 @@ class CartController {
         // console.log(req.params,req.body)
         const id = req.params.productId
         // cart 模型上添加该商品
-        const title = req.body.title, username = req.session.username
+        const title = req.body.title, username = req.user.username
         Cart.findOne({ productId: id }, (err, product) => {
             if (err) return console.log(err);
             if (product) {
@@ -43,7 +43,8 @@ class CartController {
     }
     // 获取购物车列表
     async getCartList(req, res) {
-        const username = req.session.username
+        const username = req.user.username
+       
         // 根据用户名查找商品，获取商品id
         // console.log(username)
         const cartList = await Cart.find({ usernames: { $elemMatch: { $eq: username } } })
@@ -71,7 +72,7 @@ class CartController {
         const id = req.params.productId
         
         // cart 模型上去掉想要该商品的用户
-        const username = req.session.username
+        const username = req.user.username
    
         Cart.findOne({productId:id}, (err, product) => {
             if (err) return console.log(err);

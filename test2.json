@@ -1,6 +1,20 @@
 [
     {
-        "order":1
+        "placeName": "桃源公寓"
+    },
+    {
+        "placeName": "杏园公寓"
+    },
+    {
+        "placeName": "初阳公寓"
+    },
+    {
+        "placeName": "桂苑公寓"
+    },
+    {
+        "placeName": "启明公寓"
+    },
+    {
+        "placeName": "留学生公寓"
     }
-
 ]

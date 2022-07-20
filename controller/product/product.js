@@ -79,7 +79,7 @@ class ProductController {
     // 上传商品图片
     async postProductFiles(req, res, next) {
         // console.log(req)
-
+     
         const busboy = Busboy({ headers: req.headers })
 
         // 监听请求中的字段，准确来说是获取elementUI的data属性额外带过来的参数，在前台我命名的data属性是folder,count对象，文件夹名称,文件数量
@@ -96,7 +96,7 @@ class ProductController {
         })
         busboy.on('file', (name, file, info) => {
             // console.log(11111,this.folder,this.cnt)
-
+            
             // console.log(typeof this.cnt)
             // 如果文件数量为0，说明这时候是第一次上传，那么就要新建文件夹
             if (this.cnt === 0) {
@@ -113,6 +113,7 @@ class ProductController {
                 // 添加状态，用第一个文件的文件夹
                 if (this.isEdit === 'false') this.folder = this.persistFolder
             }
+            
             // console.log(this.persistFolder,this.folder)
             const suffix = info.filename.split('.')[1], randonNum = Math.random().toString(36).slice(2, 7)
             // 文件名： 文件夹名称_随机数.后缀
@@ -147,7 +148,7 @@ class ProductController {
 
         const { description, price, categoryName } = req.body
         const title = req.body.spuName, keyword = req.body.keywordList.map(item=>item.valueName), images = req.body.spuImageList.map(item => item.imageUrl), username = req.body.owner
-        // console.log(keyword,images)
+        console.log(keyword,images)
         const imgUrl = images[0] // 主要的图片，在首页显示的图片
         const gallery = images // 图片列表，包括主图
         const folderName = imgUrl.split('/')[imgUrl.split('/').length - 2]
@@ -229,7 +230,7 @@ class ProductController {
 
     // 根据id删除商品
     async deleteProduct(req, res) {
-        console.log(req.body)
+        // console.log(req.body)
         const {id, imgUrl} = req.body
         // Product.findById(req.params.productId, (err, product) => {
 
@@ -251,6 +252,30 @@ class ProductController {
             })
 
         })
+    }
+
+    // 获取总商品数和今日新增商品数
+    async getAllProductCount(req,res){
+        let allProductCount = 0, todayProductCount = 0
+        // console.log(req.body)
+        
+        // 今日新增商品数
+        // 时间有个范围值，传过来的时间是年月日，，所以范围是2022.7.18,0:00-2022.7.19,0:00
+        // new Date(new Date(2022, 6, 18, 0, 0, 0).getTime()+1000*60*60*24)
+        const date = req.body
+        const time1 = new Date(date.year, date.month, date.day, 0, 0, 0).getTime()
+        const time2 = time1+1000*60*60*24
+        todayProductCount = await Product.find({}).where('createTime').gt(time1).lt(time2).count()
+        
+        // 总商品数
+        allProductCount = await Product.find({}).count()
+        res.json({
+            msg: '成功',
+            code: 200,
+            data: {allProductCount:allProductCount,todayProductCount:todayProductCount},
+            ok: true
+        })
+        
     }
 
 }

@@ -9,9 +9,9 @@ const Userschema = new mongoose.Schema({
     place: String,
     phone:String,
     admin:Boolean, // 是否是超级管理员
-    routes:Array
+    routes:Array,
+    createTime: String,
    
-
 });
 
 const User = mongoose.model('user', Userschema);
