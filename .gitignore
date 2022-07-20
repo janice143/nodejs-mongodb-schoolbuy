@@ -1,5 +1,9 @@
 /node_modules
 package-lock.json
+test2.json
+pro.json
+cat.json
+/public/uploadImgs
 .DS_Store
 **/.DS_Store
 .env.local
@@ -7,7 +11,3 @@ package-lock.json
 .env.test.local
 .env.production.local
 npm-debug.log*
-test2.json
-pro.json
-cat.json
-/public/uploadImgs
