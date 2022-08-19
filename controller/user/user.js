@@ -14,11 +14,12 @@ class UserController {
     const { username, password, codeNumber} = req.body
     // 验证 验证码是否正确
     const cap = req.session.cap;
+    console.log(cap)
 		if (!cap) {
 			console.log('验证码失效')
       res.json({
         msg: '验证码失效',
-        code: 401,
+        code: 514,
         data: null,
         ok: false
       })
@@ -179,6 +180,7 @@ class UserController {
   // 退出登录
   async logout(req,res,next){
     req.session.username = ''
+    req.session.cap = ''
     res.json({
       msg:'操作成功',
       code:200,

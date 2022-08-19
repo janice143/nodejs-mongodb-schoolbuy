@@ -41,8 +41,14 @@ router.post('/api/wantno/:productId', isAuth, ProductFrontController.wantNoProdu
 // 获取用户的想要列表
 // router.get('/api/want/list',ProductFrontController.getWantList)
 
+// 获取前台首页的keycat，四个关键词的商品数量
+router.get('/api/home/keycat',ProductFrontController.getKeyCat)
 
+// 获取前台首页的prodmian，按照新品、人们、低价的order获取前10样商品
+router.post('/api/home/prodmain',ProductFrontController.getProdmain)
 
+// 获取首页的prodleft
+router.get('/api/home/prodleft', ProductFrontController.getProdleft)
 
 //向外暴露
 module.exports = router;
